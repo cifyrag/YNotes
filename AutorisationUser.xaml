@@ -15,10 +15,10 @@
                 <TextBlock Foreground="#FF3B3561" Margin="0 0 0 15" FontSize="22" ><Run Text="Welcome to " /><Run  FontWeight="Bold" Text="YNotes"/><Run Text="!" FontStyle="Italic"/></TextBlock>
 
                 <TextBlock Text="Enter your login or email"  Foreground="#466c82" FontStyle="Italic" Margin="0 0 0 3" FontSize="16"/>
-                <TextBox BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" />
+                <TextBox x:Name="Login" BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" TextChanged="Login_TextChanged" />
 
                 <TextBlock Text="Enter your password"  Foreground="#466c82" FontStyle="Italic" Margin="0 0 0 3" FontSize="16"/>
-                <PasswordBox BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" />
+                <PasswordBox x:Name="Password" BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" />
 
                 <Button x:Name="LogIn" Content="Log in" Margin="0 0 0 10" Background="#51A3A3" Cursor="Hand" FontSize="22" BorderBrush="Transparent" Foreground="#FFD8D8D8" Padding="2" Width="400"  HorizontalAlignment="Center" Click="LogIn_Click" />
                 <Button x:Name="SignUp" Content="Sign up" Background="Transparent" Cursor="Hand" FontSize="16" BorderBrush="Transparent" HorizontalAlignment="Right" Foreground="#FF3B3561" Click="SignUp_Click" FontWeight="Bold"/>
