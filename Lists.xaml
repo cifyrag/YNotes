@@ -7,28 +7,57 @@
         mc:Ignorable="d"
         Title="Lists" Height="450" Width="800" MinHeight="350" MinWidth="500" >
     <Grid Background="#FFD8D8D8" >
-        <ListView HorizontalAlignment="Left" Padding="10 " FontSize="20" VerticalAlignment="Stretch" BorderBrush="#466C82" Background="#466C82" Width="240" d:ItemsSource="{d:SampleData ItemCount=5}" Foreground="#FFD8D8D8">
-            <!-- 
-            
-            <ListView.View >
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-            -->
-        </ListView>
-        <TextBlock HorizontalAlignment="Stretch"  FontSize="22" Margin="245,0,0,0" Padding="10" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Foreground="#FF3B3561"/>
-        <ListView FontSize="18" BorderBrush="Transparent" Background="Transparent" d:ItemsSource="{d:SampleData ItemCount=5}" Foreground="#FFD8D8D8" Margin="240,44,0,0">
-            <!-- 
-            
-            <ListView.View >
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-            -->
-        </ListView>
+        <TextBlock  FontSize="22" Margin="200,0,0,0" Padding="10" TextWrapping="Wrap"  VerticalAlignment="Top" Foreground="#FF3B3561" FontWeight="Bold"/>
 
+        <DataGrid x:Name="ListsDataGrid" Background="#466C82"  HorizontalAlignment="Left" Padding="10" Foreground="#FF3B3561" Width="200" >
+            <DataGrid.ContextMenu>
+                <ContextMenu BorderBrush="#FF3B3561" BorderThickness="1">
 
+                    <MenuItem Header="Delet list"   
+                              Click="Delete_Click" />
+                    <MenuItem Header="Add list"   
+                              Click="Add_Click" />
+
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+        </DataGrid>
+
+        <DataGrid x:Name="TasksDataGrid" Background="Transparent" Padding="15" Foreground="#FF3B3561" Margin="200,49,0,0" >
+            <DataGrid.ContextMenu>
+                <ContextMenu BorderBrush="#FF3B3561" BorderThickness="1">
+
+                    <MenuItem Header="Delet task"   
+                              Click="DeleteTask_Click" />
+                    <MenuItem Header="Add task"   
+                              Click="AddTask_Click" />
+                    <MenuItem Header="Clear list"   
+                              Click="Clear_Click" />
+
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+        </DataGrid>
+
+        <Popup x:Name="ListName" IsOpen="False" Placement="Center">
+            <Border Background="#3b3561" BorderBrush="#466C82" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBox x:Name="InputListName" Width="200" Height="30" />
+                    <Button Content="OK" Width="75" Height="30" Click="OKButtonAddList_Click" />
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="TaskName" IsOpen="False" Placement="Center">
+            <Border Background="#3b3561" BorderBrush="#466C82" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBox x:Name="InputTaskName" Width="200" Height="30" />
+                    <Button Content="OK" Width="75" Height="30" Click="OKButtonAddTask_Click" />
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
+
+
+
 </Window>

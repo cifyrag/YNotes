@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
 
 namespace YNotes
 {
@@ -19,9 +20,78 @@ namespace YNotes
     /// </summary>
     public partial class Lists : Window
     {
+        DataBase db = new DataBase();
         public Lists()
         {
             InitializeComponent();
         }
+
+
+        private void AddTask_Click(object sender, RoutedEventArgs e)
+        {
+            TaskName.IsOpen = true;
+        }
+
+        private void OKButtonAddTask_Click(object sender, RoutedEventArgs e)
+        {
+            string text;
+
+            text = InputTaskName.Text;
+            //ListBoxLists.Items.Add(text);
+            //myDB.AddList(text);
+            InputTaskName.Text = "";
+            TaskName.IsOpen = false;
+        }
+    
+
+        private void DeleteTask_Click(object sender, RoutedEventArgs e)
+        {
+            //if (ListBoxTasks.SelectedIndex == -1)
+            //{
+            //    MessageBox.Show("You haven't selected an item", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
+            //else
+            //{
+            //    myDB.DeleteTask(ListBoxTasks.SelectedItem.ToString(), selectedList);
+            //    ListBoxTasks.Items.RemoveAt(ListBoxTasks.SelectedIndex);
+
+            //}
+            MessageBoxResult result = MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+
+            }
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            //ListBoxTasks.Items.Clear();
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+
+            }
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            ListName.IsOpen = true;
+        }
+
+        private void OKButtonAddList_Click(object sender, RoutedEventArgs e)
+        {
+            string text;
+
+            text = InputListName.Text;
+            //ListBoxLists.Items.Add(text);
+            //myDB.AddList(text);
+            InputListName.Text = "";
+            ListName.IsOpen = false;
+        }
+
     }
 }
