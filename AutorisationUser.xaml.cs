@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,8 @@ namespace YNotes
     public partial class AutorisationUser : Page
     {
         DataBase db = new DataBase();
+        Lists listWin;
+        int idUser;
 
         public AutorisationUser()
         {
@@ -35,19 +38,21 @@ namespace YNotes
             var login = Login.Text;
             var password = Password.Password;
 
-            var adabter = new SqlDataAdapter();
-            var tablet = new DataTable();
+            //var adabter = new SqlDataAdapter();
+            //var tablet = new DataTable();
 
-            var queryString = $"select login, password, email from Users where (login = {login} or email= {login}) and password = {password} ";
-            var command = new SqlCommand(queryString, db.GetConnection());
+            //var queryString = $"select id from Users where (login = '{login}' or email= '{login}') and password = '{password}' ";
+            //var command = new SqlCommand(queryString, db.GetConnection());
 
-            adabter.SelectCommand = command;
-            adabter.Fill(tablet);
+            //adabter.SelectCommand = command;
+            //adabter.Fill(tablet);
             
-            if(tablet.Rows.Count == 1)
+            if(CheckLoginPassword(login, password))
             {
-                var listWin = new Lists();
+                
+                listWin = new Lists(idUser);
                 listWin.Show();
+                
                 Login.Text = "";
                 Password.Password = "";
                 var win = Window.GetWindow(this);
@@ -72,5 +77,26 @@ namespace YNotes
             Password.MaxLength = 50;
 
         }
+
+        private bool CheckLoginPassword(string login, string password)
+        {
+            var adabter = new SqlDataAdapter();
+            var table = new DataTable();
+
+            var queryString = $"select id from Users where (login = '{login}' or email= '{login}') and password = '{password}' ";
+            var command = new SqlCommand(queryString, db.GetConnection());
+
+            adabter.SelectCommand = command;
+            adabter.Fill(table);
+
+            if (table.Rows.Count == 1)
+            {
+                DataRow row = table.Rows[0];
+                idUser = Convert.ToInt32(row["id"]);
+                return true;
+            }
+            return false;
+         }
+
     }
 }

@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.Data;
+using System.Windows.Forms;
+
 
 namespace YNotes
 {
@@ -21,9 +24,14 @@ namespace YNotes
     public partial class Lists : Window
     {
         DataBase db = new DataBase();
-        public Lists()
+        
+        internal int idUser;
+        public Lists(int idOfUser)
         {
             InitializeComponent();
+            DataGridDemonstrate(idOfUser);
+            this.idUser = idOfUser;
+            
         }
 
 
@@ -56,7 +64,7 @@ namespace YNotes
             //    ListBoxTasks.Items.RemoveAt(ListBoxTasks.SelectedIndex);
 
             //}
-            MessageBoxResult result = MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
 
@@ -70,7 +78,7 @@ namespace YNotes
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
 
@@ -91,6 +99,20 @@ namespace YNotes
             //myDB.AddList(text);
             InputListName.Text = "";
             ListName.IsOpen = false;
+        }
+
+         
+       private void DataGridDemonstrate(int idUser)
+        {
+            var adabter = new SqlDataAdapter();
+            var table = new DataTable();
+            var queryString = $"select title from Lists where id_user = '{idUser}'";
+            var command = new SqlCommand(queryString, db.GetConnection());
+
+            adabter.SelectCommand = command;
+            adabter.Fill(table);
+            ListsDataGrid.ItemsSource = table.DefaultView;
+        
         }
 
     }

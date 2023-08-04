@@ -12,18 +12,20 @@
 
         <Border HorizontalAlignment="Center" MinWidth="440" MaxWidth="440" VerticalAlignment="Center" CornerRadius="30" Padding="20" Margin="15" Background="#FFD1D1D1" >
             <StackPanel>
-                <TextBlock Foreground="#FF3B3561" Margin="0 0 0 15" FontSize="22"><Run Text="Create "/><Run Text="a "/><Run Text="new account"/><Run Language="en-gb" Text="!"/></TextBlock>
-
+                <TextBlock Foreground="#FF3B3561" Margin="0 0 0 15" FontSize="22" Text="Createa a new account!"/>
+                <TextBlock Foreground="#466c82"  FontSize="16" Text="Login must contain 3 or more sumbols"/>
+                <TextBlock Foreground="#466c82"  FontSize="16" Text="Password must contain 6 or more sumbols,"/>
+                <TextBlock Foreground="#466c82"  Margin="0 0 0 15"  FontSize="16" Text="uppercase, digits and lowercase"/>
                 <TextBlock Text="Enter a login "  Foreground="#466c82" FontStyle="Italic" Margin="0 0 0 3" FontSize="16"/>
-                <TextBox x:Name="Login" BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" TextChanged="TextBox_TextChanged" />
+                <TextBox x:Name="Login" BorderBrush="Transparent" Background="White" Margin="0 0 0 8" Height="20" TextChanged="TextBox_TextChanged" />
 
                 <TextBlock Text="Enter a password"  Foreground="#466c82" FontStyle="Italic" Margin="0 0 0 3" FontSize="16"/>
-                <PasswordBox x:Name="Password" BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" />
+                <PasswordBox x:Name="Password" BorderBrush="Transparent"  Background="White" Margin="0 0 0 8" Height="20" />
                 <TextBlock Text="Enter the password one more time"  Foreground="#466c82" FontStyle="Italic" Margin="0 0 0 3" FontSize="16"/>
-                <PasswordBox x:Name="RePassword" BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20"  />
+                <PasswordBox x:Name="RePassword" BorderBrush="Transparent" Background="White" Margin="0 0 0 8" Height="20"  />
 
                 <TextBlock Text="Enter your email"  Foreground="#466c82" FontStyle="Italic" Margin="0 0 0 3" FontSize="16"/>
-                <TextBox x:Name="Email" BorderBrush="Transparent"  Background="#FFBDBDBD" Margin="0 0 0 8" Height="20" TextChanged="TextBox_TextChanged" />
+                <TextBox x:Name="Email" BorderBrush="Transparent" Background="White" Margin="0 0 0 8" Height="20" TextChanged="TextBox_TextChanged" />
 
                 <Button x:Name="SignUp" Content="Sign up" Margin="0 0 0 10" Background="#51A3A3" Cursor="Hand" FontSize="22" BorderBrush="Transparent" Foreground="#FFD8D8D8" Padding="2" Width="400"  HorizontalAlignment="Center" Click="SignUp_Click"  />
                 <Button  x:Name="LogIn" Content="Log in" Background="Transparent" Cursor="Hand" FontSize="16" BorderBrush="Transparent" HorizontalAlignment="Right" Foreground="#FF3B3561" FontWeight="Bold" Click="LogIn_Click"/>

@@ -7,9 +7,10 @@
         mc:Ignorable="d"
         Title="Lists" Height="450" Width="800" MinHeight="350" MinWidth="500" >
     <Grid Background="#FFD8D8D8" >
-        <TextBlock  FontSize="22" Margin="200,0,0,0" Padding="10" TextWrapping="Wrap"  VerticalAlignment="Top" Foreground="#FF3B3561" FontWeight="Bold"/>
+        <TextBlock x:Name="TitleTextBlock" FontSize="22" Margin="200,0,0,0" Padding="10" TextWrapping="Wrap"  VerticalAlignment="Top" Foreground="#FF3B3561" FontWeight="Bold"/>
 
-        <DataGrid x:Name="ListsDataGrid" Background="#466C82"  HorizontalAlignment="Left" Padding="10" Foreground="#FF3B3561" Width="200" >
+        <DataGrid x:Name="ListsDataGrid" IsReadOnly="True"   Grid.Column="1" Background="#466C82" Padding="10" Foreground="#FF3B3561" Margin="0,0,600,0" >
+
             <DataGrid.ContextMenu>
                 <ContextMenu BorderBrush="#FF3B3561" BorderThickness="1">
 
@@ -23,7 +24,7 @@
 
         </DataGrid>
 
-        <DataGrid x:Name="TasksDataGrid" Background="Transparent" Padding="15" Foreground="#FF3B3561" Margin="200,49,0,0" >
+        <DataGrid x:Name="TasksDataGrid" BorderBrush="Transparent" Background="Transparent" Padding="15" Foreground="#FF3B3561" Margin="200,49,0,0" >
             <DataGrid.ContextMenu>
                 <ContextMenu BorderBrush="#FF3B3561" BorderThickness="1">
 

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 
 namespace YNotes
 {
@@ -23,6 +24,8 @@ namespace YNotes
     public partial class NewAccount : Page
     {
         DataBase db = new DataBase();
+        Lists listWin;
+        int idUser;
         public NewAccount()
         {
             InitializeComponent();
@@ -35,63 +38,51 @@ namespace YNotes
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            var login = Login.Text;
-            var password = Password.Password;
-            var rePassword = RePassword.Password;
-            var email = Email.Text;
+            var login = Login.Text.Trim().ToLower();
+            var password = Password.Password.Trim();
+            var rePassword = RePassword.Password.Trim();
+            var email = Email.Text.Trim().ToLower();
 
-            
-            var queryString = $"insert into Users(login, password, email) values('{login}','{password}', '{email}')";
-            var command = new SqlCommand(queryString, db.GetConnection());
-            bool checkUser = CheckUser(login, password, rePassword, email);
-            db.OpenConnection();
-            
+            var checkLog = CheckLoginEmail(login, email);
+            var checkPass = CheckPasswordRePassword(password, rePassword);
 
-          
-            if(checkUser && command.ExecuteNonQuery() == 1)
+            if ( checkLog && checkPass )
             {
-                var listWin = new Lists();
-                listWin.Show();
-                var win = Window.GetWindow(this);
-                win.Hide();
-            }
-            else
-            {
-                MessageBox.Show("Account hasn't created", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            db.CloseConnection();
 
-            Login.Text = "";
-            Password.Password = "";
-            RePassword.Password = "";
-            Email.Text = "";
-        }
+                var queryString = $"insert into Users(login, password, email) values('{login}','{password}', '{email}')";
+                var command = new SqlCommand(queryString, db.GetConnection());
+                
 
-        private Boolean CheckUser(string login, string password, string rePassword, string email)
-        {
-            if (password == rePassword)
-            {
-                var adabter = new SqlDataAdapter();
-                var table = new DataTable();
-                var gueryString = $"select id, login, email from users where login = '{login}' or email = '{email}'" ;
-                var command = new SqlCommand(gueryString, db.GetConnection());
+                db.OpenConnection();
 
-                adabter.SelectCommand = command;
-                adabter.Fill(table);
-                if (table.Rows.Count > 0)
+                if (command.ExecuteNonQuery() == 1)
                 {
-                    MessageBox.Show("Account with this login or email already exist", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return false;
-                } else { return true; }
+                    listWin = new Lists(idUser);
+                    listWin.Show();
+                    var win = Window.GetWindow(this);
+                    win.Hide();
+
+                    string queryString2 = "SELECT MAX(id) FROM Users";
+                    SqlCommand command2 = new SqlCommand(queryString2, db.GetConnection());
+
+                    object result = command2.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        idUser = Convert.ToInt32(result);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Account hasn't created", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                db.CloseConnection();
+
+                Login.Text = "";
+                Password.Password = "";
+                RePassword.Password = "";
+                Email.Text = "";
             }
-            else
-            {
-                return false;
-            }
-           
-            
         }
-        
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -99,6 +90,72 @@ namespace YNotes
             Password.MaxLength = 50;
             RePassword.MaxLength = 50;
             Email.MaxLength = 100;
+
+
+        }
+        
+        private bool CheckLoginEmail(string login, string email)
+        {
+            bool cou = true;
+            
+            if (string.IsNullOrEmpty(login) || login.Length<3 ) 
+            {
+                Login.Background = Brushes.IndianRed;
+                cou = false;
+            }else
+            {
+                Login.Background = Brushes.White;
+            }
+            
+            if (!email.Contains('@') || !email.Contains('.') || string.IsNullOrEmpty(email))
+            {
+                Email.Background = Brushes.IndianRed;
+                cou = false;
+            }
+            else
+            {
+                Email.Background = Brushes.White;
+            }
+            var adabter = new SqlDataAdapter();
+            var table = new DataTable();
+            var gueryString = $"select id, login, email from users where login = '{login}' or email = '{email}'";
+            var command = new SqlCommand(gueryString, db.GetConnection());
+           
+            adabter.SelectCommand = command;
+            adabter.Fill(table);
+            if (table.Rows.Count > 0)
+            {
+                Login.Text = "";
+                Email.Text = "";
+                MessageBox.Show("Account with this login or email already exist", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                cou = false;
+            }
+            return cou;
+
+        }
+
+        private bool CheckPasswordRePassword(string password, string rePassword)
+        {
+            if (string.IsNullOrEmpty(password) || password.Count(char.IsUpper) == 0 || password.Count(char.IsLower) == 0 || password.Count(char.IsDigit) == 0)
+            {
+                Password.Background = Brushes.IndianRed;
+                
+                return false;
+            }
+            if (password != rePassword)
+            {
+                RePassword.Background = Brushes.IndianRed;
+                return false;
+            }else
+            {
+                RePassword.Background = Brushes.White;
+
+            }
+            
+            Password.Background = Brushes.White;
+            
+            return true;
+
         }
     }
 }
