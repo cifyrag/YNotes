@@ -30,22 +30,21 @@ namespace YNotes
         public AutorisationUser()
         {
             InitializeComponent();
+            AutoLog();
         }
 
+        internal void AutoLog()
+        {
+            Login.Text = "123";
+            Password.Password = "1Qwerty";
+
+        }
         private void LogIn_Click(object sender, RoutedEventArgs e)
         {
 
             var login = Login.Text;
             var password = Password.Password;
 
-            //var adabter = new SqlDataAdapter();
-            //var tablet = new DataTable();
-
-            //var queryString = $"select id from Users where (login = '{login}' or email= '{login}') and password = '{password}' ";
-            //var command = new SqlCommand(queryString, db.GetConnection());
-
-            //adabter.SelectCommand = command;
-            //adabter.Fill(tablet);
             
             if(CheckLoginPassword(login, password))
             {

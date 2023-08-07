@@ -25,15 +25,14 @@ namespace YNotes
     {
         DataBase db = new DataBase();
         
-        internal int idUser;
+        internal static int idList;
+        internal static int idUser; 
         public Lists(int idOfUser)
         {
+            idUser = idOfUser;
             InitializeComponent();
-            DataGridDemonstrate(idOfUser);
-            this.idUser = idOfUser;
-            
+            DataGridDemonstrate();
         }
-
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
@@ -102,18 +101,45 @@ namespace YNotes
         }
 
          
-       private void DataGridDemonstrate(int idUser)
+       private void DataGridDemonstrate()
         {
             var adabter = new SqlDataAdapter();
             var table = new DataTable();
-            var queryString = $"select title from Lists where id_user = '{idUser}'";
+            var queryString = $"select id, title from Lists where id_user = '{idUser}'";
             var command = new SqlCommand(queryString, db.GetConnection());
 
+            //this.ListsDataGrid.Columns[0].Visible = false;
             adabter.SelectCommand = command;
             adabter.Fill(table);
             ListsDataGrid.ItemsSource = table.DefaultView;
         
         }
 
+        private void ListsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ListsDataGrid.SelectedIndex == -1)
+            {
+                TitleTextBlock.Text = string.Empty;
+            }else
+            {
+                DataRowView selectedRow = (DataRowView)ListsDataGrid.SelectedItem;
+                var title = selectedRow["Title"].ToString();
+                
+                var idList = selectedRow["ID"].ToString();
+                TitleTextBlock.Text = title;
+
+                var adabter = new SqlDataAdapter();
+                var table = new DataTable();
+                var queryString = $"select title from Tasks where id_user = '{idUser}' and id_list = '{idList}' ";
+                var command = new SqlCommand(queryString, db.GetConnection());
+
+                adabter.SelectCommand = command;
+                adabter.Fill(table);
+                TasksDataGrid.ItemsSource = table.DefaultView;
+
+            }
+        }
+
+        
     }
 }
