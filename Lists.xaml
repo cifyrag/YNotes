@@ -15,16 +15,16 @@
                 <ContextMenu BorderBrush="#FF3B3561" BorderThickness="1">
 
                     <MenuItem Header="Delet list"   
-                              Click="Delete_Click" />
+                              Click="DeleteList_Click" />
                     <MenuItem Header="Add list"   
-                              Click="Add_Click" />
+                              Click="AddList_Click" />
 
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
         </DataGrid>
 
-        <DataGrid x:Name="TasksDataGrid" SelectionMode="Single"  BorderBrush="Transparent" Background="Transparent" Padding="15" Foreground="#FF3B3561" Margin="200,49,0,0"  >
+        <DataGrid x:Name="TasksDataGrid" SelectionMode="Single" IsReadOnly="True"  BorderBrush="Transparent" Background="Transparent" Padding="15" Foreground="#FF3B3561" Margin="200,49,0,0" Height="385" VerticalAlignment="Top" SelectionChanged="TasksDataGrid_SelectionChanged"  >
             <DataGrid.ContextMenu>
                 <ContextMenu BorderBrush="#FF3B3561" BorderThickness="1">
 

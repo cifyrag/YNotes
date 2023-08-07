@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace YNotes
@@ -25,8 +27,9 @@ namespace YNotes
     {
         DataBase db = new DataBase();
         
-        internal static int idList;
-        internal static int idUser; 
+        internal int idList = -1;
+        internal int idUser;
+        internal int idTask= -1;
         public Lists(int idOfUser)
         {
             idUser = idOfUser;
@@ -42,66 +45,133 @@ namespace YNotes
         private void OKButtonAddTask_Click(object sender, RoutedEventArgs e)
         {
             string text;
-
             text = InputTaskName.Text;
-            //ListBoxLists.Items.Add(text);
-            //myDB.AddList(text);
+            
+            var queryString = $"insert into Tasks(id_user, id_list, title) values({idUser}, {idList}, '{text}') ";
+            var command = new SqlCommand(queryString, db.GetConnection());
+
+
+            db.OpenConnection();
+
+            if (command.ExecuteNonQuery() == 1)
+            {
+                DataGridDemonstrate();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Task hasn't created", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            db.CloseConnection();
             InputTaskName.Text = "";
             TaskName.IsOpen = false;
         }
     
-
         private void DeleteTask_Click(object sender, RoutedEventArgs e)
         {
-            //if (ListBoxTasks.SelectedIndex == -1)
-            //{
-            //    MessageBox.Show("You haven't selected an item", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            //}
-            //else
-            //{
-            //    myDB.DeleteTask(ListBoxTasks.SelectedItem.ToString(), selectedList);
-            //    ListBoxTasks.Items.RemoveAt(ListBoxTasks.SelectedIndex);
-
-            //}
-            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to delete the task?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
+                var queryString = $"delete from Tasks where id= {this.idTask} ";
+                var command = new SqlCommand(queryString, db.GetConnection());
+                
 
+
+                db.OpenConnection();
+
+                if (command.ExecuteNonQuery() == 1)
+                {
+                    DataGridDemonstrate();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Task hasn't deleted", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                db.CloseConnection();
             }
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            //ListBoxTasks.Items.Clear();
-        }
-
-        private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to clear?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
+                var queryString = $"delete from Tasks where id_list={idList} ";
+                var command = new SqlCommand(queryString, db.GetConnection());
 
+
+                db.OpenConnection();
+
+                if (command.ExecuteNonQuery() >0)
+                {
+                    DataGridDemonstrate();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("List hasn't cleared", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                db.CloseConnection();
+
+            }
+            
+
+        }
+
+        private void DeleteList_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = System.Windows.MessageBox.Show("Do you want to delete the list with all tasks ?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                var queryString = $"delete from Tasks where id_list={idList} ";
+                var command = new SqlCommand(queryString, db.GetConnection());
+                var queryString2 = $"delete from Lists where id={idList} ";
+                var command2 = new SqlCommand(queryString2, db.GetConnection());
+
+
+                db.OpenConnection();
+
+                if (command.ExecuteNonQuery() > 0 && command2.ExecuteNonQuery()>0)
+                {
+                    DataGridDemonstrate();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("List hasn't deleted", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                db.CloseConnection();
             }
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
+        private void AddList_Click(object sender, RoutedEventArgs e)
         {
             ListName.IsOpen = true;
         }
 
         private void OKButtonAddList_Click(object sender, RoutedEventArgs e)
         {
-            string text;
 
+            string text;
             text = InputListName.Text;
-            //ListBoxLists.Items.Add(text);
-            //myDB.AddList(text);
+
+            var queryString = $"insert into Lists(id_user, title) values({idUser}, '{text}') ";
+            var command = new SqlCommand(queryString, db.GetConnection());
+
+
+            db.OpenConnection();
+
+            if (command.ExecuteNonQuery() == 1)
+            {
+                DataGridDemonstrate();
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("List hasn't created", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            db.CloseConnection();
             InputListName.Text = "";
             ListName.IsOpen = false;
         }
 
-         
-       private void DataGridDemonstrate()
+        private void DataGridDemonstrate()
         {
             var adabter = new SqlDataAdapter();
             var table = new DataTable();
@@ -125,12 +195,12 @@ namespace YNotes
                 DataRowView selectedRow = (DataRowView)ListsDataGrid.SelectedItem;
                 var title = selectedRow["Title"].ToString();
                 
-                var idList = selectedRow["ID"].ToString();
+                this.idList = (int)selectedRow["ID"];
                 TitleTextBlock.Text = title;
 
                 var adabter = new SqlDataAdapter();
                 var table = new DataTable();
-                var queryString = $"select title from Tasks where id_user = '{idUser}' and id_list = '{idList}' ";
+                var queryString = $"select id, title from Tasks where id_user = '{idUser}' and id_list = '{idList}' ";
                 var command = new SqlCommand(queryString, db.GetConnection());
 
                 adabter.SelectCommand = command;
@@ -140,6 +210,20 @@ namespace YNotes
             }
         }
 
-        
+        private void TasksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DataRowView selectedRow = (DataRowView)TasksDataGrid.SelectedItem;
+            var inRow = selectedRow;
+
+            if (ListsDataGrid.SelectedIndex != -1 && inRow != null)
+            {
+                
+                this.idTask = (int)selectedRow["id"];
+            }
+            else
+            {
+                this.idTask = -1;
+            }
+        }
     }
 }

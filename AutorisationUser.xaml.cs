@@ -35,7 +35,7 @@ namespace YNotes
 
         internal void AutoLog()
         {
-            Login.Text = "123";
+            Login.Text = "adm";
             Password.Password = "1Qwerty";
 
         }
