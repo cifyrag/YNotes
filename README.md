@@ -18,4 +18,5 @@
 **Don't care if you randomly clicked on the delete button, we ask you**
 
 ![image](https://github.com/cifyrag/YNotes/assets/107427860/fdd40e39-b57f-4856-8b9c-32aec337c9c6)
-_Have a nice day!_
+
+###Have a nice day!
