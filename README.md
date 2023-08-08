@@ -1,7 +1,8 @@
 # YNotes
 **To use YNotes you have to create an account**
 
-![image](https://github.com/cifyrag/YNotes/assets/107427860/9b9e1057-5b0f-40f9-8564-30ed652ecd2d)
+![image](https://github.com/cifyrag/YNotes/assets/107427860/bd14d15d-a36a-4057-b591-a0655701b9db)
+
 
 **The next time, you can just Log in**
 
