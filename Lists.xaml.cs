@@ -167,7 +167,7 @@ namespace YNotes
 
             db.OpenConnection();
 
-            if (command.ExecuteNonQuery() > 0)
+            if (command.ExecuteNonQuery() >= 0)
             {
                 DataGridDemonstrate();
             }
