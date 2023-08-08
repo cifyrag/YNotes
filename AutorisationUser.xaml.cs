@@ -30,15 +30,8 @@ namespace YNotes
         public AutorisationUser()
         {
             InitializeComponent();
-            AutoLog();
         }
-
-        internal void AutoLog()
-        {
-            Login.Text = "adm";
-            Password.Password = "1Qwerty";
-
-        }
+        
         private void LogIn_Click(object sender, RoutedEventArgs e)
         {
 

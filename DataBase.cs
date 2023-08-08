@@ -10,12 +10,8 @@ namespace YNotes
 {
     internal class DataBase
     {
-        SqlConnection sqlConnection = new SqlConnection(@"Data Source = CIFYRAG; Initial Catalog= YNotesDB; Integrated Security=true; ");
-        //internal int idUser;
+        SqlConnection sqlConnection = new SqlConnection(@"Data Source = localhost; Initial Catalog= YNotesDB; Integrated Security=true; ");
         internal int idList = -1;
-
-
-
 
         public void OpenConnection()
         {

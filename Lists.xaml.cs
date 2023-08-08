@@ -30,6 +30,7 @@ namespace YNotes
         internal int idList = -1;
         internal int idUser;
         internal int idTask= -1;
+        internal int selectedList = -1;
         public Lists(int idOfUser)
         {
             idUser = idOfUser;
@@ -39,7 +40,14 @@ namespace YNotes
 
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            TaskName.IsOpen = true;
+            if (selectedList != -1)
+            {
+                TaskName.IsOpen = true;
+            }else
+            {
+                System.Windows.MessageBox.Show("You didn't selected list", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
         }
 
         private void OKButtonAddTask_Click(object sender, RoutedEventArgs e)
@@ -56,6 +64,7 @@ namespace YNotes
             if (command.ExecuteNonQuery() == 1)
             {
                 DataGridDemonstrate();
+                
             }
             else
             {
@@ -158,7 +167,7 @@ namespace YNotes
 
             db.OpenConnection();
 
-            if (command.ExecuteNonQuery() == 1)
+            if (command.ExecuteNonQuery() > 0)
             {
                 DataGridDemonstrate();
             }
@@ -178,11 +187,10 @@ namespace YNotes
             var queryString = $"select id, title from Lists where id_user = '{idUser}'";
             var command = new SqlCommand(queryString, db.GetConnection());
 
-            //this.ListsDataGrid.Columns[0].Visible = false;
             adabter.SelectCommand = command;
             adabter.Fill(table);
             ListsDataGrid.ItemsSource = table.DefaultView;
-        
+            ListsDataGrid.SelectedIndex = selectedList;
         }
 
         private void ListsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -194,6 +202,7 @@ namespace YNotes
             {
                 DataRowView selectedRow = (DataRowView)ListsDataGrid.SelectedItem;
                 var title = selectedRow["Title"].ToString();
+                this.selectedList = ListsDataGrid.SelectedIndex;
                 
                 this.idList = (int)selectedRow["ID"];
                 TitleTextBlock.Text = title;
