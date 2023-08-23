@@ -61,7 +61,7 @@ namespace YNotes
 
             db.OpenConnection();
 
-            if (command.ExecuteNonQuery() == 1)
+            if (command.ExecuteNonQuery() >= 0)
             {
                 DataGridDemonstrate();
                 
@@ -138,7 +138,7 @@ namespace YNotes
 
                 db.OpenConnection();
 
-                if (command.ExecuteNonQuery() > 0 && command2.ExecuteNonQuery()>0)
+                if (command.ExecuteNonQuery() >= 0 && command2.ExecuteNonQuery()>=0)
                 {
                     DataGridDemonstrate();
                 }
